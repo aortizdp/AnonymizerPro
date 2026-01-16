@@ -1,0 +1,34 @@
+1. Documentación del Programa (Manual de Uso)
+AI Anonymizer Pro
+Garantizando la privacidad de los datos mediante IA local.
+
+Introducción
+AI Anonymizer Pro es una herramienta diseñada para el cumplimiento de la RGPD y la protección de la privacidad. Permite enmascarar datos sensibles (nombres, DNI, IBAN, emails, teléfonos) en documentos de Office y archivos de texto plano de manera local y segura.
+
+Características Principales
+IA NO Generativa: Utiliza procesamiento de lenguaje natural (NLP) local mediante la librería Spacy.
+
+Soporte Multiformato: Compatible con .xlsx, .xls, .csv y .docx.
+
+Multilingüe: Interfaz disponible en Inglés, Catalán, Español, Francés y Alemán.
+
+Privacidad Total: Los datos no salen del servidor; no hay conexión con APIs de terceros.
+
+Guía de Uso
+Paso 1: Anonimización
+Selecciona la pestaña "Anonymize".
+
+Sube tu archivo.
+
+Haz clic en "Run Process".
+
+Visualiza la previsualización para confirmar el enmascaramiento (ej. %%USER_1%%).
+
+Descarga el archivo ZIP. IMPORTANTE: Este ZIP contiene el documento protegido y el archivo decryption_keys.xlsx.
+
+Paso 2: Desanonimización (Restauración)
+Tienes dos opciones:
+
+Método ZIP: Sube el ZIP completo que descargaste anteriormente. El sistema buscará automáticamente el documento y las llaves.
+
+Método Manual: Sube el archivo anonimizado y el archivo de llaves por separado. El archivo de llaves debe mantener el formato original generado por la app.

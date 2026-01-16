@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+pandas
+openpyxl
+python-docx
+chardet
+requests
+streamlit
+spacy
