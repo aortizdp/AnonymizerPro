@@ -1,84 +1,57 @@
-# AI Anonymizer Pro
-🔒 AI Anonymizer Pro
-Professional-grade document anonymization using local, non-generative AI.
+# 🔒 AI Anonymizer Pro
 
-AI Anonymizer Pro is a corporate-ready tool designed to protect sensitive data within Excel, CSV, and Word documents. Unlike other tools, it operates as a "Simple Translator" using local Natural Language Processing (NLP), ensuring that your data never leaves your infrastructure.
+**AI Anonymizer Pro** is a powerful, locally-hosted tool designed to protect data privacy. It identifies and masks sensitive information (names, IDs, IBANs, etc.) from documents using Natural Language Processing (NLP) without relying on generative AI, ensuring your data never leaves your server.
 
-🌟 Key Features
-100% Local Processing: No data is sent to external APIs or Generative AI models. Your privacy is guaranteed.
+🚀 **Live Demo:** [anonymizerpro.thedepablos.com](https://anonymizerpro.thedepablos.com)
 
-Multi-format Support: Seamlessly handles .xlsx, .csv, and .docx files.
+---
 
-Multi-language Interface: Fully translated into English, Català, Español, Français, and Deutsch.
+## ✨ Key Features
 
-Intelligent Detection: Automatically identifies and masks:
+* **Multi-language Support:** Fully localized in English, Catalan, Spanish, French, and German.
+* **Privacy First:** All processing is done locally via NLP (non-generative AI). Zero data storage policy.
+* **Multiple Formats:** Supports `.xlsx`, `.csv`, and `.docx` files.
+* **Secure Workflow:**
+    1. **Anonymize:** Upload your file and get a masked version plus an encryption key file.
+    2. **Deanonymize:** Use the key file to restore the original data whenever you need it.
+* **No Cookies:** Respects user privacy with a strictly no-cookie policy.
 
-Personal Names (NER)
+---
 
-National IDs (DNI/NIE)
+## 🛠️ Tech Stack
 
-IBAN & Banking information
+* **Frontend:** [Streamlit](https://streamlit.io/) (Python-based web framework).
+* **Backend:** [FastAPI](https://fastapi.tiangolo.com/) for high-performance API processing.
+* **NLP Engine:** Local Python libraries for PII (Personally Identifiable Information) detection.
+* **Server:** Nginx as a reverse proxy with Let's Encrypt SSL.
 
-Phone numbers and Emails
+---
 
-Reversible Process: Includes a secure decryption_keys.xlsx generation to restore original data when needed.
+## 🏗️ Project Architecture
 
-🚀 Quick Start
-1. Prerequisites
-Ensure you have Python 3.10+ installed. It is recommended to use a virtual environment.
+The project is built with a modular and scalable approach:
+* `frontend/app.py`: Main application logic.
+* `frontend/config.py`: Centralized configuration for URLs and project links.
+* `frontend/translations.py`: Translation dictionaries for multi-language support.
+* `backend/`: Core engine for data anonymization.
 
-Bash
-# Clone the repository
-git clone https://github.com/aortizdp/AnonymizerPro.git
-cd AnonymizerPro
+---
 
-# Create and activate virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+## ⚙️ Installation & Setup
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Download the NLP model
-python -m spacy download es_core_news_lg
-2. Running the Application
-The project is split into a FastAPI backend and a Streamlit frontend.
-
-Start the Backend:
-
-Bash
-uvicorn backend.main:app --host 0.0.0.0 --port 7000
-Start the Frontend:
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/aortizdp/AnonymizerPro.git](https://github.com/aortizdp/AnonymizerPro.git)
+   cd AnonymizerPro
+Run the startup script: We've included a helper script to launch both the backend and frontend simultaneously:
 
 Bash
-streamlit run frontend/app.py
-🛡️ Privacy & Security First
-This application follows a Zero-Data-Storage policy:
-
-No Cookies: We do not track users or use any advertising cookies.
-
-No Logs: Document contents are processed in volatile memory and never logged.
-
-Local AI: We use spacy with local models. No Generative AI (like GPT) is used to prevent data leakage or "hallucinations".
-
-[!IMPORTANT] Auditability: Because privacy is our core value, the entire source code is open for review. For corporate environments, we encourage running this tool in an air-gapped or restricted network.
-
-💡 VIBE Coding & Development
-This project was developed using the VIBE Coding methodology: a high-level intent-driven development process where the human acts as a "Thought Partner" with AI.
-
-Architect: Albert Ortiz
-
-Thought Partner: Gemini AI
-
-☕ Support the Project
-AI Anonymizer Pro is free and open-source. If this tool helps you or your company save time and improve security, please consider supporting the server costs:
-
-📄 License
+chmod +x run_all.sh
+./run_all.sh
+⚖️ License
 Distributed under the MIT License. See LICENSE for more information.
 
-👤 Author
-Albert Ortiz
+☕ Support
+Created by Albert Ortiz. If you find this tool useful, consider buying me a coffee!
 
-Website: albert.thedepablos.com
-
-GitHub: @aortizdp
+Buy Me A Coffee

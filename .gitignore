@@ -1,7 +1,9 @@
-venv/
 __pycache__/
-*.pyc
-.DS_Store
-.env
-data/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.streamlit/config.toml
 *.zip
+*.xlsx
