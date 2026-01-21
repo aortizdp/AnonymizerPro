@@ -53,5 +53,6 @@ Distributed under the MIT License. See LICENSE for more information.
 
 ☕ Support
 Created by Albert Ortiz. If you find this tool useful, consider buying me a coffee!
+https://buymeacoffee.com/aortizdp
 
 Buy Me A Coffee
