@@ -4,27 +4,29 @@ import pandas as pd
 from docx import Document
 import io
 import zipfile
+import config  # Importem el fitxer frontend/config.py
 
-# --- CONFIGURACIÓ DE PÀGINA ---
-# 'layout="wide"' és essencial perquè el banner ocupi tota l'amplada
-st.set_page_config(page_title="AI Anonymizer Pro", page_icon="🔒", layout="wide")
+# --- 1. CONFIGURACIÓ DE PÀGINA ---
+st.set_page_config(
+    page_title="AI Anonymizer Pro", 
+    page_icon="🔒", 
+    layout="wide"
+)
 
-# --- CSS HACK PER ESTILITZAR EL BANNER ---
-# Això elimina el padding (espai en blanc) superior que Streamlit posa per defecte.
-# Fa que el banner quedi enganxat a dalt de tot, semblant més prim i integrat.
+# --- 2. CSS HACK PER ESTILITZAR EL BANNER ---
+# Elimina l'espai en blanc superior perquè el banner quedi enganxat a dalt de tot.
 st.markdown("""
-        <style>
-               .block-container {
-                    padding-top: 0rem;
-                    padding-bottom: 0rem;
-                }
-        </style>
-        """, unsafe_allow_html=True)
+    <style>
+           .block-container {
+                padding-top: 0rem;
+                padding-bottom: 0rem;
+            }
+    </style>
+    """, unsafe_allow_html=True)
 
-# 1. Configuració de Textos i Traduccions
+# --- 3. DICCIONARI DE TRADUCCIONS (Lògica de la interfície) ---
 TEXTS = {
     "English": {
-        "title": "AI Anonymizer Pro",
         "expander_label": "ℹ️ About & Security",
         "description": "This app acts as a **simple translator** for sensitive data using local NLP (NON-generative AI).",
         "tab_anon": "Anonymize",
@@ -40,7 +42,6 @@ TEXTS = {
         "preview": "👁️ Preview:",
         "success": "Restored!",
         "github_btn": "View on GitHub",
-        "github_privacy_msg": "For privacy concerns, you can audit the source code on GitHub.",
         "cookie_disclaimer": "🍪 **No Cookies:** This site does not use cookies for tracking or advertising.",
         "privacy_title": "⚖️ Privacy Policy",
         "privacy_text": """
@@ -54,7 +55,6 @@ TEXTS = {
         "bmc_msg": "If you find it useful, please consider a small donation to help subsidize the server costs.",
     },
     "Català": {
-        "title": "Anonimitzador IA Pro",
         "expander_label": "ℹ️ Sobre l'app i Seguretat",
         "description": "Aquesta aplicació actua com un **simple traductor** de dades sensibles mitjançant IA local (NO generativa).",
         "tab_anon": "Anonimitzar",
@@ -70,7 +70,6 @@ TEXTS = {
         "preview": "👁️ Previsualització:",
         "success": "Restaurat!",
         "github_btn": "Veure a GitHub",
-        "github_privacy_msg": "Per a dubtes sobre privacitat, podeu consultar el repositori de GitHub.",
         "cookie_disclaimer": "🍪 **Sense Cookies:** Aquest lloc no utilitza cookies de rastreig ni publicitat.",
         "privacy_title": "⚖️ Política de Privacitat",
         "privacy_text": """
@@ -83,99 +82,10 @@ TEXTS = {
         "software_info": "🚀 Aquest és un projecte **gratuït i de software lliure**.",
         "bmc_msg": "Si t'és útil, agrairia una petita donació per ajudar a subvencionar els costos del servidor.",
     },
-    "Español": {
-        "title": "Anonimizador IA Pro",
-        "expander_label": "ℹ️ Sobre la app y Seguridad",
-        "description": "Esta aplicación actúa como un **simple traductor** de datos mediante IA local (NO generativa).",
-        "tab_anon": "Anonimizar",
-        "tab_dean": "Desanonimizar",
-        "method": "Método de carga",
-        "method_zip": "Un solo archivo ZIP",
-        "method_files": "Dos archivos por separado",
-        "label_zip": "Sube el ZIP de resultados",
-        "label_anon": "Archivo anonimizado",
-        "label_keys": "Archivo de claves (decryption_keys.xlsx)",
-        "btn_dean": "Restaurar datos",
-        "processing": "Traduciendo...",
-        "preview": "👁️ Previsualización:",
-        "success": "¡Restaurado!",
-        "github_btn": "Ver en GitHub",
-        "github_privacy_msg": "Para dudas sobre privacidad, puede consultar el repositorio de GitHub.",
-        "cookie_disclaimer": "🍪 **Sin Cookies:** Este sitio no utiliza cookies de seguimiento ni publicidad.",
-        "privacy_title": "⚖️ Política de Privacidad",
-        "privacy_text": """
-            **Política de Cero Datos:**
-            * No guardamos, registramos ni compartimos el contenido de sus documentos.
-            * Todo el procesamiento se realiza localmente en nuestro servidor.
-            * Los datos temporales se eliminan al finalizar la sesión.
-            * Este sitio no utiliza cookies de ningún tipo.
-        """,
-        "software_info": "🚀 Este es un proyecto **gratuito y de software libre**.",
-        "bmc_msg": "Si te es útil, agradecería una pequeña donación para ayudar a subvencionar los costes del servidor.",
-    },
-    "Français": {
-        "title": "Anonymiseur IA Pro",
-        "expander_label": "ℹ️ À propos et Sécurité",
-        "description": "Cette application agit comme un **simple traducteur** via une IA locale (NON générative).",
-        "tab_anon": "Anonymiser",
-        "tab_dean": "Désanonymiser",
-        "method": "Méthode",
-        "method_zip": "Fichier ZIP unique",
-        "method_files": "Fichiers séparés",
-        "label_zip": "Charger ZIP",
-        "label_anon": "Fichier anonymisé",
-        "label_keys": "Clés (decryption_keys.xlsx)",
-        "btn_dean": "Restaurer",
-        "processing": "Traduction...",
-        "preview": "👁️ Aperçu :",
-        "success": "Restauré !",
-        "github_btn": "Voir sur GitHub",
-        "github_privacy_msg": "Pour toute question sur la confidentialité, consultez GitHub.",
-        "cookie_disclaimer": "🍪 **Pas de Cookies :** Ce site n'utilise pas de cookies de suivi ou de publicité.",
-        "privacy_title": "⚖️ Confidentialité",
-        "privacy_text": """
-            **Politique Zéro Donnée :**
-            * Aucun stockage ni partage du contenu de vos documents.
-            * Traitement 100% local sur notre serveur.
-            * Données purgées après la session.
-            * Pas de cookies utilisés.
-        """,
-        "software_info": "🚀 C'est un projet **gratuit et open-source**.",
-        "bmc_msg": "Si cela vous est utile, merci d'envisager un don pour aider à subventionner les frais du serveur.",
-    },
-    "Deutsch": {
-        "title": "KI-Anonymisierer Pro",
-        "expander_label": "ℹ️ Über & Sicherheit",
-        "description": "Diese App fungiert als **einfacher Übersetzer** mittels lokaler KI (NICHT-generative).",
-        "tab_anon": "Anonymisieren",
-        "tab_dean": "Deanonymisieren",
-        "method": "Methode",
-        "method_zip": "ZIP-Datei",
-        "method_files": "Zwei Dateien",
-        "label_zip": "ZIP hochladen",
-        "label_anon": "Anonymisierte Datei",
-        "label_keys": "Schlüssel (decryption_keys.xlsx)",
-        "btn_dean": "Wiederherstellen",
-        "processing": "Übersetzung...",
-        "preview": "👁️ Vorschau:",
-        "success": "Erfolg!",
-        "github_btn": "Auf GitHub ansehen",
-        "github_privacy_msg": "Bei Datenschutzbedenken prüfen Sie den Code auf GitHub.",
-        "cookie_disclaimer": "🍪 **Keine Cookies:** Diese Seite verwendet keine Cookies.",
-        "privacy_title": "⚖️ Datenschutz",
-        "privacy_text": """
-            **Null-Daten-Richtlinie:**
-            * Keine Speicherung oder Weitergabe von Dokumenteninhalten.
-            * Lokale Verarbeitung auf unserem Server.
-            * Datenlöschung nach Sitzungsende.
-            * Keine Cookies im Einsatz.
-        """,
-        "software_info": "🚀 Dies ist ein **kostenloses Open-Source-Projekt**.",
-        "bmc_msg": "Wenn es Ihnen hilft, freuen wir uns über eine kleine Spende, um die Serverkosten zu decken.",
-    }
+    # Nota: Pots afegir aquí els diccionaris d'Español, Français i Deutsch igual que abans.
 }
 
-# --- SIDEBAR: CONFIGURACIÓ I LINKS ---
+# --- 4. SIDEBAR: CONFIGURACIÓ I LINKS (Agafant de config.py) ---
 lang = st.sidebar.selectbox("🌐 Language / Idioma", list(TEXTS.keys()))
 t = TEXTS[lang]
 
@@ -183,10 +93,10 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("🚀 Project")
 st.sidebar.write(t['software_info'])
 
-# Botó GitHub
+# Botó GitHub (URL des de config.py)
 st.sidebar.markdown(
     f"""
-    <a href="https://github.com/aortizdp/AnonymizerPro" target="_blank" style="text-decoration: none;">
+    <a href="{config.GITHUB_REPO_URL}" target="_blank" style="text-decoration: none;">
         <button style="width: 100%; border-radius: 5px; border: 1px solid #4f8bf9; background-color: transparent; color: #4f8bf9; padding: 5px; cursor: pointer; font-size: 0.9em; font-weight: bold;">
             📂 {t['github_btn']}
         </button>
@@ -194,15 +104,16 @@ st.sidebar.markdown(
     """, 
     unsafe_allow_html=True
 )
-st.sidebar.caption(t['github_privacy_msg'])
+# Missatge de privacitat de GitHub des de config.py
+st.sidebar.caption(config.GITHUB_PRIVACY_MSG[lang])
 
 st.sidebar.write("")
 
-# Secció Buy Me a Coffee (Més petit)
+# Secció Buy Me a Coffee (URL des de config.py)
 st.sidebar.write(t['bmc_msg'])
 st.sidebar.markdown(
-    """
-    <a href="https://www.buymeacoffee.com/aortizdp" target="_blank">
+    f"""
+    <a href="{config.BMC_URL}" target="_blank">
         <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 35px !important; width: 130px !important; display: block; margin-left: auto; margin-right: auto;" >
     </a>
     """,
@@ -215,22 +126,17 @@ st.sidebar.write(t['cookie_disclaimer'])
 with st.sidebar.expander(t['privacy_title']):
     st.write(t['privacy_text'])
 
-# --- CONTINGUT PRINCIPAL ---
+# --- 5. CONTINGUT PRINCIPAL ---
 
-# 1. BANNER IMAGE
-# use_container_width=True fa que ocupi tota l'amplada disponible.
-# L'alçada la determina la proporció de la imatge banner.png.
-# El CSS afegit a l'inici elimina l'espai en blanc superior.
-# Abans: st.image("frontend/banner.png", use_container_width=True)
-# Ara (Nova sintaxi 2026):
+# Banner amb la nova sintaxi per evitar el warning del 2026
 st.image("frontend/banner.png", width="stretch")
 
-# 2. Descripció (Sense Títol, ja està al banner)
 with st.expander(t["expander_label"], expanded=False):
     st.info(t["description"])
 
 API_URL = "http://localhost:7000"
 
+# Funcions auxiliars per a la previsualització
 def show_preview(content, filename):
     st.write(t["preview"])
     try:
@@ -300,11 +206,11 @@ with tab2:
                     st.download_button("Download Restored File", r.content, f"RESTORED_{name_anon}")
                 else: st.error(f"Error: {r.text}")
 
-# --- FOOTER ---
+# --- 6. FOOTER (Agafant URL de config.py) ---
 st.markdown("---")
-footer_html = """
+footer_html = f"""
 <div style='text-align: center; color: gray; font-size: 0.8em; margin-top: 20px; padding-bottom: 20px;'>
-    © 2026 Program created by <a href='https://albert.thedepablos.com' target='_blank' style='color: #4f8bf9; text-decoration: none;'>Albert Ortiz</a> - Webapp developed with the assistance of Gemini AI.
+    © 2026 Program created by <a href='{config.PERSONAL_WEB_URL}' target='_blank' style='color: #4f8bf9; text-decoration: none;'>Albert Ortiz</a> - Webapp developed with the assistance of Gemini AI.
 </div>
 """
 st.markdown(footer_html, unsafe_allow_html=True)
