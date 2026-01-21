@@ -1,4 +1,4 @@
-#AI Anonymizer Pro
+# AI Anonymizer Pro
 🔒 AI Anonymizer Pro
 Professional-grade document anonymization using local, non-generative AI.
 
