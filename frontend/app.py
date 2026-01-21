@@ -202,7 +202,7 @@ st.sidebar.write("")
 st.sidebar.write(t['bmc_msg'])
 st.sidebar.markdown(
     """
-    <a href="https://www.buymeacoffee.com/aortiz" target="_blank">
+    <a href="https://www.buymeacoffee.com/aortizdp" target="_blank">
         <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 35px !important; width: 130px !important; display: block; margin-left: auto; margin-right: auto;" >
     </a>
     """,
